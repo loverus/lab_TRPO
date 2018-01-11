@@ -26,6 +26,7 @@ public class GetJSONFormat implements Server {
         this.Jbuilder= new GsonBuilder().setPrettyPrinting().create();
         this.myServer= HttpServer.create(new InetSocketAddress(PORT), 0);
         this.myServer.createContext(ROOT, http -> {
+            int req_id = 0;
             InputStreamReader isr = new InputStreamReader(http.getRequestBody());
             final String jsonRequest = new BufferedReader(isr).lines().collect(Collectors.joining());
             System.out.println("request:" + jsonRequest);
@@ -34,9 +35,21 @@ public class GetJSONFormat implements Server {
                 Object object = Jbuilder.fromJson(jsonRequest, Object.class);
                 jsonResponse = Jbuilder.toJson(object);
             } catch (JsonSyntaxException e) {
-                JsonObject jsonError = new JsonObject();
-                jsonError.addProperty("message", e.getMessage());
-                jsonResponse = Jbuilder.toJson(jsonError);
+                
+                String[] errorSplittedString = e.getMessage().split(".+: | at ");
+                jsonResponse = Jbuilder.toJson(
+                        new JsonError(
+                                e.hashCode(),
+                                errorSplittedString[1],
+                                "at " + errorSplittedString[2],
+                                jsonRequest,
+                                req_id
+                        ));
+            } finally {
+                
+                req_id++;
+                
+
             }
             System.out.println("response:" + jsonResponse);
             http.sendResponseHeaders(CODE_OK, jsonResponse.length());
