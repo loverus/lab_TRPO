@@ -5,6 +5,9 @@ import org.jetbrains.annotations.NotNull;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.util.stream.Collectors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class GetJSONFormat implements Server {
 
@@ -16,7 +19,13 @@ public class GetJSONFormat implements Server {
     private static final int PORT = 80;
     private static final int CODE_OK = 200;
     private static final String ROOT = "/";
+/*
 
+for log
+
+*/
+    private static final Logger LOGGER = Logger.getLogger(LoggerExample.class.getName());
+    
     /**
      * Checking Json file
      *
@@ -52,6 +61,14 @@ public class GetJSONFormat implements Server {
 
             }
             System.out.println("response:" + jsonResponse);
+            
+           /* 
+           for log
+           */
+            LOGGER.info("Logger Name: "+LOGGER.getName());
+            LOGGER.info("response: " +jsonResponse);
+            /*
+            */
             http.sendResponseHeaders(CODE_OK, jsonResponse.length());
             http.getResponseBody().write(jsonResponse.getBytes());
             http.close();
