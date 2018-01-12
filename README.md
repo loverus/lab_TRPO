@@ -5,4 +5,4 @@ The JSON Validation Service (JVS) is a validator that allows every users to chec
 Run:
 ./gradlew docker && docker run -t --rm -p 80:80 validation-server
 
-curl -s --data-binary @filename.json http://localhost:80
+curl -s --data-binary @filename.json http://localhost
