@@ -47,7 +47,7 @@ for log
                 
                 String[] errorSplittedString = e.getMessage().split(".+: | at ");
                 jsonResponse = Jbuilder.toJson(
-                        new JsonError(
+                        new Error(
                                 e.hashCode(),
                                 errorSplittedString[1],
                                 "at " + errorSplittedString[2],
