@@ -24,7 +24,7 @@ public class GetJSONFormat implements Server {
 for log
 
 */
-    private static final Logger LOGGER = Logger.getLogger(LoggerExample.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GetJSONFormat.class.getName());
     
     /**
      * Checking Json file
