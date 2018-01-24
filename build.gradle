@@ -34,14 +34,14 @@ task createDockerfile(type: Dockerfile) {
     from 'openjdk:alpine'
     exposePort 80
     addFile ('.', '/')
-    defaultCommand ('java', '-jar', '/build/libs/GetJSONFormat.jar')
+    defaultCommand ('java', '-jar', '/build/libs/getjsonformat.jar')
 }
 
 task createDockerImage(type: DockerBuildImage) {
     dependsOn fatJar
     dependsOn createDockerfile
     inputDir = createDockerfile.destFile.parentFile
-    tag = 'GetJSONFormat'
+    tag = 'getjsonformat'
 }
 
 repositories {
