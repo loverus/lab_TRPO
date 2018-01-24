@@ -1,0 +1,55 @@
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'com.bmuschko.docker-remote-api'
+apply plugin: 'com.bmuschko.docker-java-application'
+
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
+
+mainClassName = 'GetJSONFormat'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.bmuschko:gradle-docker-plugin:3.2.1'
+    }
+}
+
+task fatJar(type: Jar) {
+	manifest {
+        attributes (
+        	'Main-Class': 'GetJSONFormat'
+        )
+    }
+    baseName 'GetJSONFormat'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+task crdockerfile(type: Dockerfile) {
+    destFile = project.file('./Dockerfile')
+    from 'openjdk:alpine'
+    exposePort 80
+    addFile ('.', '/')
+    defaultCommand ('java', '-jar', '/build/libs/getjsonformat.jar')
+}
+
+task crdockerimage(type: DockerBuildImage) {
+    dependsOn fatJar
+    dependsOn crdockerfile
+    inputDir = crdockerfile.destFile.parentFile
+    tag = 'getjsonformat'
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+   compile 'com.google.code.gson:gson:2.8.2'
+   compile 'org.jetbrains:annotations:13.0'
+}
