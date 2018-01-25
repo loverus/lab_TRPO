@@ -9,4 +9,4 @@ Run container:
 `docker run -d -p 80:80 getjsonformat`
 
 Send file to validation: 
-`curl -s --data-binary @filename.json http://localhost `
+`curl -s --upload-file test.json http://localhost `
