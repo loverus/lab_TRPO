@@ -5,8 +5,8 @@ The JSON Validation Service (JVS) is a validator that allows every users to chec
 Create image with Gradle:
 ./gradlew crdockerimage 
 
-Run:
-docker run -d -p 80:80 github.com/loverus/lab_TRPO.git
+Run container:
+docker run -d -p 80:80 getjsonformat
 
 Send file to validation: 
 curl -s --data-binary @filename.json http://localhost
